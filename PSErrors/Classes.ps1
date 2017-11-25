@@ -26,7 +26,7 @@ class PSErrors {
     # Returns the the CallStack
     # that was taken at the place the error occured
     # in your scripts
-    [CallStackFrame] GetCallStack() {
+    [CallStackFrame[]] GetCallStack() {
         return $this.CallStack
     }
 
@@ -44,5 +44,9 @@ class PSErrors {
     # wrapped we return null
     [PSErrors] GetWrappedError() {
         return $this.WrappedError
+    }
+
+    [string] GetErrorMessage() {
+        return $this.Message
     }
  }
