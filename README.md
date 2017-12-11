@@ -15,3 +15,22 @@ if ($Err -ne $null) {
 }
 $proc | Out-List
 ```
+Powershell also allows us to return multiple results from our functions. We could write a function as so
+```powershell
+function Invoke-MyTask {
+    [OutputType([MyTask[]])]
+    [OutputType([ErrorRecord])]
+
+    param (
+        [string]$ComputerName
+    )
+
+    # If script errors return a $null for the MyTask array and a value for the ErrorRecords
+    if (Test-Connection -ComputerName $ComputerName -Quiet -ne $true) {
+        return $null, $err
+    }
+
+    # If script completes return a value for the MyTask array and a $null for the ErrorRecord
+    return $tasks, $null
+}
+```
