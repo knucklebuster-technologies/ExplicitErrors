@@ -1,5 +1,5 @@
 $moduleRoot = $PSScriptRoot
 
-. "$ModuleRoot\New-ErrorRecord"
+. "$ModuleRoot\Lib\New-ErrorRecord"
 
 Export-ModuleMember -Function "New-ErrorRecord"
