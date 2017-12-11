@@ -1,3 +1,17 @@
-# PSHandlingErrors
-Creating a new way of dealing with error conditions instead of just exception handling.
-Explicit error handling is used in systems such as Node.js and Go. The foundation of this type of error handling is that function or blocks of code should declare that an error may occur by returning 2 values. The 2 values are always passed back in the order call result value and then any error that occurs. Usually if no error occured the return would (CallValue, Null) and if an error did occur (Null, ErrValue).
+# ExplicitErrors
+Set of functions, tools, examples, guidelines of using explicit error handling in PSH.
+
+Explicit error handling is the practice of detecting an error an taking action. Where exception handling is the pratice of waiting until something wrong happens and then taking action. Systems like node.js and google golang use this type of handling errors. Go (golang) does by any function call that could encounter an error condition should return an error as its last return value, go allows multiple values to return from a function call.
+
+Powershell supports this type of error handling and it's even part of the core cmdlet.
+1. ErrorAction common cmdlet param
+2. ErrorVarible common cmdlet param
+
+These 2 parameters are available on any cmdlet or function that has the CmdletBinding attribute. Heres an example of how you can use these to handle the error.
+```powershell
+$proc = Get-Process -ErrorAction SilentlyContinue -ErrorVariable 'Err'
+if ($Err -ne $null) {
+    # Handle the error you might log it and continue, return error to caller, or exit
+}
+$proc | Out-List
+```
