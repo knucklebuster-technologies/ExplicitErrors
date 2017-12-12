@@ -1,8 +1,14 @@
 $moduleRoot = $PSScriptRoot
 
+$ExportFunction = @()
+
 Set-Variable -Name ErrorActionPreference -Value SilentlyContinue -Scope Global -Force
 Set-Variable -Name PSDefaultParameterValues -Value @{"*:ErrorAction"='SilentlyContinue'; "*:ErrorVariables"='ExErr'} -Scope Global -Force
 
-. "$ModuleRoot\Lib\New-ExErrRecord"
+Get-ChildItem -Path "$moduleRoot\Lib" -Exclude "*Tests*" | ForEach-Object -Process {
+    . $PSItem.FullName
+}
 
-Export-ModuleMember -Function "New-ExErrRecord"
+$ExportFunction | ForEach-Object -Process {
+    Export-ModuleMember -Function $PSItem
+}

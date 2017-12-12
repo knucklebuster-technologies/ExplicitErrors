@@ -15,7 +15,7 @@
 .NOTES
     General notes
 #>
-function New-ErrorRecord {
+function New-ExErrRecord {
     [CmdletBinding()]
     [OutputType([ErrorRecord])]
     Param (
@@ -47,3 +47,5 @@ function New-ErrorRecord {
 
     End {}
 }
+
+$ExportFunction+='New-ExErrRecord'

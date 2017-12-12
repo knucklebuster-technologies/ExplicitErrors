@@ -1,6 +1,8 @@
 # ExplicitErrors
 Set of functions, tools, examples, guidelines of using explicit error handling in PSH.
 
+Background:
+
 Explicit error handling is the practice of detecting an error an taking action. Where exception handling is the pratice of waiting until something wrong happens and then taking action. Systems like node.js and google golang use this type of handling errors. Go (golang) does by any function call that could encounter an error condition should return an error as its last return value, go allows multiple values to return from a function call.
 
 Powershell supports this type of error handling and it's even part of the core cmdlet.
@@ -34,3 +36,7 @@ function Invoke-MyTask {
     return $tasks, $null
 }
 ```
+
+Implementation:
+
+This module sets the global ErrorActionPreference to SilentlyContinue. It also sets the default parameter value for ErrorAction to SilentlyContinue and ErrorVariable to ExErr on all cmdlets and advanced function. 
