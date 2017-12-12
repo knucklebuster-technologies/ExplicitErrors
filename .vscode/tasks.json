@@ -12,7 +12,8 @@
         {
             "label": "git-commit",
             "type": "shell",
-            "command": "git commit -m 'committing staged changes'"
+            "command": "git commit -m 'committing staged changes'",
+            "problemMatcher": []
         }
     ]
 }
