@@ -2,32 +2,35 @@
 
 <#
 .SYNOPSIS
-    Short description
+    Creates and returns an ExErrRecord object to using in explicit error checking. 
 .DESCRIPTION
-    Long description
+    Creates and returns an ExErrRecord object to using in explicit error checking.
+    The object returned is ExErrRecord a custom class defined in this module.
+    ExErrRecord extends System.Management.Automation.ErrorRecord with one property
+    CallStack. The CallStack property is of type System.Management.Automation.CallStack[].
+    The CallStack is expected to be the return from the command Get-PSCallStack.
 .EXAMPLE
-    PS C:\> <example usage>
-    Explanation of what the example does
-.INPUTS
-    Inputs (if any)
+    PS C:\> $Err = New-ExErrRecord -Description "Oh Oh!" -Id "Test 1" -Category InvalidArgument -CallStack $(Get-PSCallStack) $Err = New-ExErrRecord -ErrorDescription "Oh Oh!" -ErrorId "Test 1" -ErrorCategory InvalidArgument -CallStack $(Get-PSCallStack) -ErrorAction SilentlyContinue -ErrorVariable $ExErr
+    This will create a new ExErrRecord that could be used to return from a function to signal
+    an error condition.
 .OUTPUTS
-    Output (if any)
+    [ExErrRecord]
 .NOTES
-    General notes
+    Part of Explicit Error Experiment
 #>
 function New-ExErrRecord {
     [CmdletBinding()]
-    [OutputType([ErrorRecord])]
+    [OutputType([ExErrRecord])]
     Param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true, HelpMessage="Provide an Error Description or an Exception")]
-        [Exception]
-        $ErrorDescription,
+        [string]
+        $Description,
         [Parameter(Mandatory=$true, HelpMessage="Provide a string to uniquely identify this error")]
         [string]
-        $ErrorId,
+        $Id,
         [Parameter(Mandatory=$true, HelpMessage="Provide the category that best matches error")]
         [ErrorCategory]
-        $ErrorCategory,
+        $Category,
         [Parameter(Mandatory=$false, HelpMessage="Provide the output of the Get-CallStack command")]
         [CallStackFrame[]]
         $CallStack,
@@ -39,8 +42,8 @@ function New-ExErrRecord {
     Begin {}
 
     Process {
-        $err = New-Object -TypeName 'ErrorRecord' -ArgumentList $ErrorDescription, $ErrorId, $ErrorCategory, $TargetObject
-        $err | Add-Member -MemberType NoteProperty -Name "CallStack" -Value $CallStack -Force 
+        $ex = [Exception]::new($Description)
+        $err = [ExErrRecord]::new($ex, $Id, $Category, $TargetObject)
         $err.CallStack = $CallStack
         $err
     }
