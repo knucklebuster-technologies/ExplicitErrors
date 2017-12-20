@@ -14,6 +14,20 @@
             "type": "shell",
             "command": "git commit -m 'committing staged changes'",
             "problemMatcher": []
+        },
+        {
+            "label": "run pester",
+            "type": "shell",
+            "command": "powershell.exe -command Invoke-Pester",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new"
+            },
+            "problemMatcher": [
+                "$pester"
+            ]
         }
     ]
 }

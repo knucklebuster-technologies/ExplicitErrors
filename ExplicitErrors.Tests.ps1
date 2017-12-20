@@ -1,5 +1,6 @@
 using namespace System.Management.Automation
-using module .\ExplicitErrors.psd1
+
+Import-Module .\ExplicitErrors.psd1 -Force
 
 Describe "ExplicitErrors Module Tests" {
     It "ErrorActionPreferece Set To SilentlyContinue" {
@@ -16,7 +17,7 @@ Describe "ExplicitErrors Module Tests" {
 }
 
 Describe "New-ExErrRecord" {
-    $Err = New-ExErrRecord -ErrorDescription "Oh Oh!" -ErrorId "Test 1" -ErrorCategory InvalidArgument -CallStack $(Get-PSCallStack) -ErrorAction SilentlyContinue
+    $Err = New-ExErrRecord -Description "Oh Oh!" -Id "Test 1" -Category InvalidArgument -CallStack $(Get-PSCallStack) -ErrorAction SilentlyContinue
     It "ErrorRecord was created" {
         $Err | Should Not Be $null
     }

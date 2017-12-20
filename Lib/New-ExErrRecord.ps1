@@ -1,5 +1,9 @@
 ﻿using namespace System.Management.Automation
 
+class ExErrRecord : ErrorRecord {
+    [CallStackFrame[]]$CallStack = $null
+}
+
 <#
 .SYNOPSIS
     Creates and returns an ExErrRecord object to using in explicit error checking. 
@@ -13,6 +17,17 @@
     PS C:\> $Err = New-ExErrRecord -Description "Oh Oh!" -Id "Test 1" -Category InvalidArgument -CallStack $(Get-PSCallStack) $Err = New-ExErrRecord -ErrorDescription "Oh Oh!" -ErrorId "Test 1" -ErrorCategory InvalidArgument -CallStack $(Get-PSCallStack) -ErrorAction SilentlyContinue -ErrorVariable $ExErr
     This will create a new ExErrRecord that could be used to return from a function to signal
     an error condition.
+.PARAMETER Description
+    A message explaining what and or where an error occured
+.PARAMETER Id
+    A unique string used to specify a certain type of error
+.PARAMETER Category
+    The more general what type of error. System, User, Network, Etc.
+    See the ErrorCategory enumeration for list.
+.PARAMETER CallStack
+    This property can store the returned objects from a call to Get-PSCallStack
+.PARAMETER TargetObject
+    This is the Object in use at time of error
 .OUTPUTS
     [ExErrRecord]
 .NOTES
@@ -20,7 +35,7 @@
 #>
 function New-ExErrRecord {
     [CmdletBinding()]
-    [OutputType([ExErrRecord])]
+    [OutputType([ErrorRecord])]
     Param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true, HelpMessage="Provide an Error Description or an Exception")]
         [string]
@@ -50,5 +65,3 @@ function New-ExErrRecord {
 
     End {}
 }
-
-$ExportFunction+='New-ExErrRecord'
